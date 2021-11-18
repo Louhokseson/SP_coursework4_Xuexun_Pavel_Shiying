@@ -105,7 +105,7 @@ our_bfgs <- function(theta,f,...,tol=1e-5,fscale=1,maxit=140){
   # How the function works.
   #                                     
   #                                       ***** 
-  
+  #browser()
   number_par <- length(theta) # the number of parameters
   
   current_theta <- theta
@@ -115,6 +115,16 @@ our_bfgs <- function(theta,f,...,tol=1e-5,fscale=1,maxit=140){
   current_B <- I <- diag(number_par)
   
   N_steps = 0
+  
+  current_function_value = f(current_theta,...)
+  
+  current_gradient = gradient(f,current_theta,...)
+  
+  # WARNING infinite WARNING
+  if (is.infinite(current_function_value)|sum(is.infinite(current_gradient))!=0)
+  {
+    stop('Error: the objective or derivatives are not finite at your initial parameters. Please have a check.')
+  }
   
   while (N_steps<=maxit)
   {
@@ -145,6 +155,11 @@ our_bfgs <- function(theta,f,...,tol=1e-5,fscale=1,maxit=140){
       updated_gradient = gradient(f,updated_theta,...)
       
       counter = counter + 1
+      # WARNING NOT CONVERGED WHEN IT HIT THE MAXIMUM ITERATION WARNING
+      if (counter > 100 & max(abs(current_gradient)) > (abs(current_function_value)+fscale)*tol)
+      {
+        stop('Error:The step fails to reduce the objective but convergence has not occurred')
+      }
       #print("counter")
       #print(counter)
       
@@ -159,7 +174,7 @@ our_bfgs <- function(theta,f,...,tol=1e-5,fscale=1,maxit=140){
       
       if(updated_function_value >= current_function_value)
       {
-        stop("ERROR")
+        stop("Error: the update function value is worse than the previous one in Wolfe condition 2")
       
       }
     
@@ -187,6 +202,11 @@ our_bfgs <- function(theta,f,...,tol=1e-5,fscale=1,maxit=140){
           break
         }
    
+  }
+  # WARNING maximum iteration is reached. WARNING
+  if( max(abs(current_gradient)) > (abs(current_function_value)+fscale)*tol)
+  {
+    stop("Error: The algorithm reached the maximum iteration but it didn't converge.")
   }
   
   H = Hessian(f,theta_to_return,...)
