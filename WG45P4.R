@@ -25,7 +25,7 @@ bfgs <- function(theta,f,...,tol=1e-5,fscale=1,maxit=140){
   #  1) setting initial theta, initial function value ( the function value at the initial theta) and initial gradient.
   #  2) check wheter our initial function value or initial gradient are finate.
   #  3) We loop until we find an optimal solution - reduce our current step by half until we reduce the function
-  #                                               - check wolfe second condition
+  #                                               - check Wolfe second condition
   #                                               - check for convergence
   #                                               - raise errors when needed
   # 
