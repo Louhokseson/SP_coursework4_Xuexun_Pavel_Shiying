@@ -2,7 +2,6 @@
 # https://github.com/Louhokseson/SP_coursework4_Xuexun_Pavel_Shiying.git
 #
 #                                     ***** OVERVIEW *****
-<<<<<<< HEAD
 #     
 # This program creates a function that implements the BFGS quasi-Newton minimization method.
 # The BFGS algorithm is a quasi-Newton method for solving unconstrained optimization problems.
